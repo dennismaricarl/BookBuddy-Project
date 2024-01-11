@@ -30,6 +30,7 @@ const bookBuddyApi = createApi({
     // fetch the user checked out books
     fetchReservation: builder.query({
       query: () => "/api/reservations",
+      providesTags: ["reservations"]
     }),
 
     // fetch the logged in user details
@@ -37,6 +38,7 @@ const bookBuddyApi = createApi({
       query: () => ({
         url: "/api/users/me",
       }),
+      providesTags: ["user"]
     }),
 
     // user registration
@@ -46,6 +48,7 @@ const bookBuddyApi = createApi({
         method: "POST",
         body: user,
       }),
+      invalidatesTags: ["user"],
       transformResponse: (response) => response,
       transformErrorResponse: (response) => response,
     }),
@@ -57,6 +60,7 @@ const bookBuddyApi = createApi({
         method: "POST",
         body: user,
       }),
+      invalidatesTags: ["user"],
       transformResponse: (response, meta, arg) => {
         console.log(response);
         return response;
@@ -74,6 +78,7 @@ const bookBuddyApi = createApi({
 
         body: { available: available },
       }),
+      invalidatesTags: ["reservations"]
     }),
 
     //delete existing reservation (update book's availability)
@@ -82,6 +87,7 @@ const bookBuddyApi = createApi({
         url: `/api/reservations/${reservationId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["reservations"]
     }),
   }),
 });
